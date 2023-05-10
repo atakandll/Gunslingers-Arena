@@ -15,7 +15,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    //Happens before anything else Fusion does, network application, reconlation etc 
+    //Happens before anything else Fusion does, network application, reconlation vs.
     //Called at the start of the Fusion Update loop, before the Fusion simulation loop.
     //It fires before Fusion does ANY work, every screen refresh.
     public void BeforeUpdate()
