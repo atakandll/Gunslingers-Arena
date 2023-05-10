@@ -63,3 +63,4 @@ public class PlayerSpawnerController : NetworkBehaviour, IPlayerJoined, IPlayerL
         }
     }
 }
+

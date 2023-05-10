@@ -33,7 +33,7 @@ public class NetworkRunnerController : MonoBehaviour, INetworkRunnerCallbacks
         networkRunnerInstance.AddCallbacks(this);
 
         //ProvideInput means that player is recording and sending inputs to the server.
-        //networkRunnerInstance.ProvideInput = true;
+        networkRunnerInstance.ProvideInput = true;
 
         var startGameArgs = new StartGameArgs() // load new game
         {
