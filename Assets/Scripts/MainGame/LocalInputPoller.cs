@@ -7,22 +7,24 @@ using System;
 
 public class LocalInputPoller : NetworkBehaviour, INetworkRunnerCallbacks
 {
-    [SerializeField] private PlayerController player;
+    [SerializeField] private PlayerController player; // dataya ulaşmak için playercontrollera ulaşıyoruz.
 
     public override void Spawned()
     {
+        // This logic checks if the player is the LOCAL PLAYER (local machine)
+
         if (Runner.LocalPlayer == Object.InputAuthority)
         {
-            Runner.AddCallbacks(this);
+            Runner.AddCallbacks(this); // interfacedaki bütün metotları çağırıyoruz.
         }
     }
 
     //Only if local we get input callback, no need to check
-    public void OnInput(NetworkRunner runner, NetworkInput input)
+    public void OnInput(NetworkRunner runner, NetworkInput input) // en önemli metot ınput için
     {
         if (runner != null && runner.IsRunning)
         {
-            var data = player.GetPlayerNetworkInput();
+            var data = player.GetPlayerNetworkInput(); // playerda çektiğimiz dataya buradan ulaştık
             input.Set(data);
         }
     }
