@@ -33,8 +33,12 @@ public class CreateNickNamePanel : LobbyPanelBase
 
         if (nickName.Length >= MAX_CHAR_FOR_NICKNAME)
         {
+            GlobalManagers.instance.networkRunnerController.SetPlayerNickname(nickName);
+
             base.ClosePanel(); // create panel kısmını kapattık 2. kısım açılsın diye.
+
             lobbyUIManager.ShowPanel(LobbyPanelType.MiddleSectionPanel); // middle section panelinin gözükeceği yer.
+
 
         }
     }
