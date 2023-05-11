@@ -18,6 +18,8 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     private float horizontal;
     private Rigidbody2D rigid;
 
+    private PlayerWeaponController playerWeaponController;
+
     private enum PlayerInputButtons
     {
         None,
@@ -28,6 +30,8 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     {
         rigid = GetComponent<Rigidbody2D>();
 
+        playerWeaponController = GetComponent<PlayerWeaponController>();
+
         SetLocalObjects();
     }
     private void SetLocalObjects()
@@ -35,16 +39,17 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
         if (Runner.LocalPlayer == Object.HasInputAuthority) // eğer local player isem
         {
             cam.SetActive(true);
+
             var nickName = playerName = GlobalManagers.instance.networkRunnerController.LocalPlayerNickname;
             RpcSetNickName(nickName);
 
         }
 
     }
-    // sends RPC to the Host ( from a client)
-    // sources define which PEER can send the rpc
-    // The RpcTargets defines on which it is executed!
-    [Rpc(sources: RpcSources.InputAuthority, RpcTargets.StateAuthority)] // clientteki nickname hatasını düzeltmek için böyle yapıyoruz.
+    // rpc are usually to be used so the clients could actually tell the server something and in our case
+    // for instance telling the server to change our name
+
+    [Rpc(sources: RpcSources.InputAuthority, RpcTargets.StateAuthority)] // clientteki nickname hatasını düzeltmek için böyle yapıyoruz.Çünkü ismi değiştirmiyor
     private void RpcSetNickName(NetworkString<_8> nickname)
     {
         playerName = nickname;
@@ -102,11 +107,14 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
 
     }
 
-    public PlayerData GetPlayerNetworkInput()
+    public PlayerData GetPlayerNetworkInput() // playerdataları işlediğimiz yer.
     {
         PlayerData data = new PlayerData();
+
         data.HorizontalInput = horizontal; // datadaki horizontol input equals to our local variable input
+        data.GunPivotRotation = playerWeaponController.localQuaternionPivotRot;
         data.NetworkButtons.Set(PlayerInputButtons.Jump, Input.GetKey(KeyCode.Space)); // zıplama yerini kullandık ve burada data.set yaptık set içinde int ve bool tipinde değişkenler alıyor.
+
         return data; // then we will return the data.
     }
 

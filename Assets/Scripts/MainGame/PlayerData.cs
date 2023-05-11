@@ -7,5 +7,6 @@ public struct PlayerData : INetworkInput // this class will contain any player Ä
 {
 
     public float HorizontalInput;
+    public Quaternion GunPivotRotation;
     public NetworkButtons NetworkButtons;
 }
