@@ -28,6 +28,7 @@ public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
     {
         if (Runner.TryGetInputForPlayer<PlayerData>(Object.InputAuthority, out var input))
         {
+            // eğer bunun içinde rotasyonu yapsaydım other clients senkronize olmucaktı
             currentPlayerPivotRotation = input.GunPivotRotation; // this will get sync across all player
 
         }

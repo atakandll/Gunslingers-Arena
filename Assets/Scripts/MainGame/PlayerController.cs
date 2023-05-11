@@ -16,9 +16,10 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     [Networked] private NetworkButtons buttonsPrev { get; set; } //  hosta senkronize etmek için yapıyoruz.[network]
 
     private float horizontal;
-    private Rigidbody2D rigid;
+    private Rigidbody2D rb;
 
     private PlayerWeaponController playerWeaponController;
+    private PlayerVisualController playerVisualController;
 
     private enum PlayerInputButtons
     {
@@ -28,9 +29,10 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
 
     public override void Spawned() // fusionun startı
     {
-        rigid = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
 
         playerWeaponController = GetComponent<PlayerWeaponController>();
+        playerVisualController = GetComponent<PlayerVisualController>();
 
         SetLocalObjects();
     }
@@ -86,12 +88,23 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
         // the client does not have state authority or input authoriy;
         // the request type of input does not exist in simulation.
         // Hareket ettirdiğimiz kısım.
+        // "InputAuthority" is likely an object that manages input for a specific player.
+        // So, the code is checking whether the input authority can provide input data for a specific player of type "PlayerData". If it can, the input data is assigned to the "input" variable.
         if (Runner.TryGetInputForPlayer<PlayerData>(Object.InputAuthority, out var input)) // // this out keyword will find PlayerData script and assign the value all the information from that script and put it into input variable.
         {
-            rigid.velocity = new Vector2(input.HorizontalInput * moveSpeed, rigid.velocity.y);
+            rb.velocity = new Vector2(input.HorizontalInput * moveSpeed, rb.velocity.y);
 
             CheckJumpInput(input);
         }
+    }
+
+    // Runs after all simulations have finished.
+    // Use in place of Unity's Update when Fusion is handling Physics.
+    // animasyonlar için güzel kullanım yeri
+    public override void Render()
+    {
+        playerVisualController.RendererVisuals(rb.velocity);
+
     }
     private void CheckJumpInput(PlayerData input)
     {
@@ -99,7 +112,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
 
         if (pressed.WasPressed(buttonsPrev, PlayerInputButtons.Jump))
         {
-            rigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
         }
 
         // without a network attribute, this will actually be set only locally and this condyion will never be true,
