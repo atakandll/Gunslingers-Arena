@@ -96,6 +96,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
 
             CheckJumpInput(input);
         }
+        playerVisualController.UpdateScaleTrasform(rb.velocity); // character flip
     }
 
     // Runs after all simulations have finished.
