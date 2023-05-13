@@ -21,10 +21,11 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     private PlayerWeaponController playerWeaponController;
     private PlayerVisualController playerVisualController;
 
-    private enum PlayerInputButtons
+    public enum PlayerInputButtons
     {
         None,
-        Jump
+        Jump,
+        Shoot
     }
 
     public override void Spawned() // fusionun startı
@@ -104,7 +105,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     // animasyonlar için güzel kullanım yeri
     public override void Render()
     {
-        playerVisualController.RendererVisuals(rb.velocity);
+        playerVisualController.RendererVisuals(rb.velocity, playerWeaponController.isHoldingShootingKey);
 
     }
     private void CheckJumpInput(PlayerData input)
@@ -128,7 +129,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
         data.HorizontalInput = horizontal; // datadaki horizontol input equals to our local variable input
         data.GunPivotRotation = playerWeaponController.localQuaternionPivotRot;
         data.NetworkButtons.Set(PlayerInputButtons.Jump, Input.GetKey(KeyCode.Space)); // zıplama yerini kullandık ve burada data.set yaptık set içinde int ve bool tipinde değişkenler alıyor.
-
+        data.NetworkButtons.Set(PlayerInputButtons.Shoot, Input.GetButton("Fire1"));
         return data; // then we will return the data.
     }
 
