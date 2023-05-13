@@ -38,7 +38,7 @@ public class PlayerVisualController : MonoBehaviour
         var isMoving = velocity.x > 0.1f || velocity.x < -0.1f;
 
         anim.SetBool(isMovingHash, isMoving);
-        anim.SetBool(isMovingHash, isShooting);
+        anim.SetBool(isShootingHash, isShooting);
     }
     public void UpdateScaleTrasform(Vector2 velocity) // this called during the simulation
     {

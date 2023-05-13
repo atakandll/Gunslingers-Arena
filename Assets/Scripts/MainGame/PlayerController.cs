@@ -122,7 +122,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
 
     }
 
-    public PlayerData GetPlayerNetworkInput() // playerdataları işlediğimiz yer.
+    public PlayerData GetPlayerNetworkInput() // playerdataları işlediğimiz yer. Buraya değerleri gönderiyuz FUN da alıyoruz.
     {
         PlayerData data = new PlayerData();
 

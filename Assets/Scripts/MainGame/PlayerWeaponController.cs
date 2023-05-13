@@ -6,6 +6,8 @@ using Fusion;
 public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
 {
     public Quaternion localQuaternionPivotRot { get; private set; }
+    [SerializeField] private NetworkPrefabRef bulletPrefab = NetworkPrefabRef.Empty; // Fusion.NetworkObject prefab reference
+    [SerializeField] private Transform firePointPos;
     [SerializeField] private float delayBetweenShots = 0.18f;
     [SerializeField] private ParticleSystem muzzleEffect;
 
@@ -41,24 +43,31 @@ public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
             CheckShootInput(input);
             // eğer bunun içinde rotasyonu yapsaydım other clients senkronize olmucaktı
             currentPlayerPivotRotation = input.GunPivotRotation; // this will get sync across all player
-            buttonsPrev = input.NetworkButtons;
+
+            buttonsPrev = input.NetworkButtons; // button previousu set ettik.
 
         }
         pivotToRotate.rotation = currentPlayerPivotRotation;
     }
-    private void CheckShootInput(PlayerData input) // burda karşılaştırm yapıyoruz
+    private void CheckShootInput(PlayerData input) // burda önceki buttonlarla karşılaştırma yapıyoruz
     {
-        var currentButtons = input.NetworkButtons.GetPressed(buttonsPrev);
-        isHoldingShootingKey = currentButtons.WasReleased(buttonsPrev, PlayerController.PlayerInputButtons.Shoot);
+        var currentButtons = input.NetworkButtons.GetPressed(buttonsPrev); // öncekiyle şimdiyi karşılaştırma yaparken
+
+        isHoldingShootingKey = currentButtons.WasReleased(buttonsPrev, PlayerController.PlayerInputButtons.Shoot); // depending on if we are holding the mouse or not
 
         if (currentButtons.WasReleased(buttonsPrev, PlayerController.PlayerInputButtons.Shoot) && shootCoolDown.ExpiredOrNotRunning(Runner))
         {
+            playMuzzleEffect = true;
+            //if the cooldown is not running, if it is expired, only if it expired we want to create cooldown
             shootCoolDown = TickTimer.CreateFromSeconds(Runner, delayBetweenShots); // delayin olduğ yer
-            Debug.Log("Shoot");
+
+
+            Runner.Spawn(bulletPrefab, firePointPos.position, firePointPos.rotation, Object.InputAuthority);
 
         }
         else
         {
+            playMuzzleEffect = false;
             // todo close the particular effect
 
         }
@@ -71,7 +80,7 @@ public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
         changed.LoadOld();
         var oldState = changed.Behaviour.playMuzzleEffect;
 
-        if (oldState != currentState)
+        if (oldState != currentState) // it means that it did change and we actually want to play or stop muzzle
         {
             changed.Behaviour.PlayOrStopMuzzleEffect(currentState);
         }
