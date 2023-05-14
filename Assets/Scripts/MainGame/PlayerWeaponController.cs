@@ -7,7 +7,7 @@ public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
 {
     public Quaternion localQuaternionPivotRot { get; private set; }
     [SerializeField] private NetworkPrefabRef bulletPrefab = NetworkPrefabRef.Empty; // Fusion.NetworkObject prefab reference
-    [SerializeField] private Transform firePointPos;
+    [SerializeField] private Transform firePointPos; // merminin ateşleneceği yer.
     [SerializeField] private float delayBetweenShots = 0.18f;
     [SerializeField] private ParticleSystem muzzleEffect;
 
@@ -15,6 +15,7 @@ public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
     [SerializeField] private Transform pivotToRotate;
     [Networked, HideInInspector] public NetworkBool isHoldingShootingKey { get; private set; }
 
+    // for the host and for the client with Input Authority because both are predicting based on the players input, it would not work for proxies.
     [Networked(OnChanged = nameof(OnMuzzleEffectStateChanged))] private NetworkBool playMuzzleEffect { get; set; }
 
     [Networked] private Quaternion currentPlayerPivotRotation { get; set; } // bütün playerlarda sync etmek için
@@ -78,6 +79,7 @@ public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
         var currentState = changed.Behaviour.playMuzzleEffect;
 
         changed.LoadOld();
+
         var oldState = changed.Behaviour.playMuzzleEffect;
 
         if (oldState != currentState) // it means that it did change and we actually want to play or stop muzzle
