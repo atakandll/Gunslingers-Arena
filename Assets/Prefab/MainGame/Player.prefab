@@ -5344,6 +5344,7 @@ GameObject:
   - component: {fileID: 2332539827755803670}
   - component: {fileID: 1112287097171321517}
   - component: {fileID: 5758553987940326272}
+  - component: {fileID: 501332151426430768}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5394,6 +5395,7 @@ MonoBehaviour:
   - {fileID: 6953897291933438829}
   - {fileID: 1817429234441824492}
   - {fileID: 5758553987940326272}
+  - {fileID: 501332151426430768}
   - {fileID: 4550438714240387597}
   SimulationBehaviours: []
 --- !u!114 &1144303201
@@ -5610,6 +5612,21 @@ MonoBehaviour:
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   Hitboxes:
   - {fileID: 7825170785487447648}
+--- !u!114 &501332151426430768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2521529229024119024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a673ab12183d49be2cff9d46f3c9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  fillAmountImage: {fileID: 6883105910454883919}
+  healtAmountText: {fileID: 4592729214083266703}
 --- !u!1 &2521529229068066407
 GameObject:
   m_ObjectHideFlags: 0

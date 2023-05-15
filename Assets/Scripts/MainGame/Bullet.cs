@@ -7,6 +7,7 @@ public class Bullet : NetworkBehaviour
 {
     [SerializeField] private LayerMask playerLayerMask;
     [SerializeField] private LayerMask groundLayerMask;
+    [SerializeField] private int bulletDamage = 10;
     [SerializeField] private float moveSpeed = 20;
     [SerializeField] private float lifeTimeAmount = 0.8f;
 
@@ -44,7 +45,7 @@ public class Bullet : NetworkBehaviour
 
     private void CheckIfHitGround()
     {
-        // mermi için raycast yaptık
+        // Find all colliders touching or inside of the given box.
         var groundCollider = Runner.GetPhysicsScene2D().OverlapBox(transform.position, collider2D.bounds.size, 0, groundLayerMask);
 
         if (groundCollider != default)
@@ -70,10 +71,19 @@ public class Bullet : NetworkBehaviour
 
                     if (didNotHitOurOwnPlayer)
                     {
-                        //todo damage player
+                        if (Runner.IsServer)
+                        {
+                            //todo damage player
+                            player.GetComponent<PlayerHealthController>().Rpc_ReducePlayerHealth(bulletDamage);
+
+                        }
+
                         didHitSomething = true;
                         break;
+
                     }
+
+
 
 
 

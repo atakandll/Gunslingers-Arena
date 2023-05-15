@@ -47,6 +47,14 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
             RpcSetNickName(nickName);
 
         }
+        else
+        {
+            //if this is not our ınputAuthority player(proxy)
+            //we want to make sure set this networkrigidbody(nrb) interpolationdatasource to snapshots
+            // as it will automatically set all nrb to be predicted regardless if it is a proxy or not, as we are doing full pyhsics prediction.
+            //and setting it back to snapshots for proxies, will also make sure that lag compensation will workd properly + be more cost efficient.
+            GetComponent<NetworkRigidbody2D>().InterpolationDataSource = InterpolationDataSources.Snapshots;
+        }
 
     }
     // rpc are usually to be used so the clients could actually tell the server something and in our case

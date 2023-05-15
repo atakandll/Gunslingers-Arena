@@ -74,6 +74,10 @@ public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
         }
 
     }
+    //OnChanged is usually for visual stuff that needs a lot of updates, not something like input or anything like that
+    //onchanged detects if there was a change between the prev data to the current one if there is, you will get the new data
+    //muzzle effect is happening very often and it is not "GAME LOGIC related" it's not like a player jumps or moves a position 
+    // it's a VISUAL object that is turned off and on a lot of times in a small AMOUNT of time 
     private static void OnMuzzleEffectStateChanged(Changed<PlayerWeaponController> changed)
     {
         var currentState = changed.Behaviour.playMuzzleEffect;
