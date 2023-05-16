@@ -173,6 +173,11 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
         buttonsPrev = input.NetworkButtons; // always update the buttons pressed to network buttons
 
     }
+    public override void Despawned(NetworkRunner runner, bool hasState)
+    {
+        GlobalManagers.instance.objectPoolingManager.RemoveNetworkObjectFromDic(Object);
+        Destroy(gameObject);
+    }
 
     public PlayerData GetPlayerNetworkInput() // playerdataları işlediğimiz yer. Buraya değerleri gönderiyuz FUN da alıyoruz.
     {

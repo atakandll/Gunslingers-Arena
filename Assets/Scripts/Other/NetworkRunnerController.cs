@@ -5,7 +5,7 @@ using Fusion.Sockets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NetworkRunnerController : MonoBehaviour, INetworkRunnerCallbacks
+public class NetworkRunnerController : MonoBehaviour, INetworkRunnerCallbacks // have the functions when we are the starting game, joining session, creating session
 {
     // networkrunner represent a server or client simulation
 
@@ -46,7 +46,8 @@ public class NetworkRunnerController : MonoBehaviour, INetworkRunnerCallbacks
             GameMode = mode,
             SessionName = roomName,
             PlayerCount = 4,
-            SceneManager = networkRunnerInstance.GetComponent<INetworkSceneManager>()
+            SceneManager = networkRunnerInstance.GetComponent<INetworkSceneManager>(),
+            ObjectPool = networkRunnerInstance.GetComponent<ObjectPoolingManager>()
         };
 
         var result = await networkRunnerInstance.StartGame(startGameArgs);
