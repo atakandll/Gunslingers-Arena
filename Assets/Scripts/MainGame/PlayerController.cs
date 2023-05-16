@@ -15,7 +15,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     [Networked(OnChanged = nameof(OnNicknameChanged))] private NetworkString<_8> playerName { get; set; } // isim senkronizasyonu için yapıyoruz.
 
     [Networked] private NetworkButtons buttonsPrev { get; set; } //  hosta senkronize etmek için yapıyoruz.[network]
-    [Networked] private TickTimer respawnTimer { get; set; }
+    [Networked] public TickTimer RespawnTimer { get; private set; }
     [Networked] private Vector2 serverNextSpawnPoint { get; set; }
 
     private float horizontal;
@@ -93,7 +93,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
         PlayerIsAlive = false;
         rb.simulated = false;
         playerVisualController.TriggerDieAnimation();
-        respawnTimer = TickTimer.CreateFromSeconds(Runner, 5f);
+        RespawnTimer = TickTimer.CreateFromSeconds(Runner, 5f);
 
     }
 
@@ -133,9 +133,9 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     {
         if (PlayerIsAlive) return;
 
-        if (respawnTimer.Expired(Runner))
+        if (RespawnTimer.Expired(Runner))
         {
-            respawnTimer = TickTimer.None;
+            RespawnTimer = TickTimer.None;
             //todo respawn method
             RespawnPlayer();
         }
