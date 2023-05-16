@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using System;
+using Random = UnityEngine.Random;
 
 public class PlayerSpawnerController : NetworkBehaviour, IPlayerJoined, IPlayerLeft
 {
     [SerializeField] private NetworkPrefabRef playerNetworkPrefab = NetworkPrefabRef.Empty;
     [SerializeField] private Transform[] spawnPoints;
+
+    private void Awake()
+    {
+        if (GlobalManagers.instance != null)
+        {
+            GlobalManagers.instance.playerSpawnerController = this;
+        }
+    }
 
     public override void Spawned()
     {
@@ -19,6 +28,12 @@ public class PlayerSpawnerController : NetworkBehaviour, IPlayerJoined, IPlayerL
 
             }
         }
+    }
+    public Vector2 GetRandomSpawnPoint()
+    {
+        var index = Random.Range(0, spawnPoints.Length - 1);
+        return spawnPoints[index].position;
+
     }
 
     // aşağıdaki spawnPlayerlar hosttan sonra gelicek playerları oluşturacak.

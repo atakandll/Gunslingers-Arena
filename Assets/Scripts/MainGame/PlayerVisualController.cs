@@ -30,6 +30,17 @@ public class PlayerVisualController : MonoBehaviour
 
         init = true;
     }
+    public void TriggerDieAnimation()
+    {
+        const string TRIGGER = "Die";
+        anim.SetTrigger(TRIGGER);
+
+    }
+    public void TriggerRespawnAnimation()
+    {
+        const string RESPAWN = "Respawn";
+        anim.SetTrigger(RESPAWN);
+    }
 
     public void RendererVisuals(Vector2 velocity, bool isShooting) // this called after simulation
     {

@@ -13,10 +13,13 @@ public class PlayerHealthController : NetworkBehaviour
     [SerializeField] TextMeshProUGUI healtAmountText;
     [Networked(OnChanged = nameof(HealthAmountChanged))] private int currentHealthAmount { get; set; }
     private const int MAX_HEALTH_AMOUNT = 100;
+    private PlayerController playerController;
 
     public override void Spawned() // spawned will be called on the host
     {
+        playerController = GetComponent<PlayerController>();
         currentHealthAmount = MAX_HEALTH_AMOUNT; // canı ilk başkta 100 yaptık.
+
     }
 
     // 
@@ -72,8 +75,15 @@ public class PlayerHealthController : NetworkBehaviour
         if (healtAmount <= 0)
         {
             //todo kill the player
+            playerController.KillPlayer();
             Debug.Log("Player is dead");
         }
+    }
+
+    public void ResetHealthAmountToMax() // respawn olurken canın resetlenmesini sağlıyor.
+    {
+        currentHealthAmount = MAX_HEALTH_AMOUNT;
+
     }
 
 }

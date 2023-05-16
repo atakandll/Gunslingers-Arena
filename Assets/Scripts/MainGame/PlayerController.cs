@@ -10,16 +10,20 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     [SerializeField] private GameObject cam;
     [SerializeField] private float moveSpeed = 6;
     [SerializeField] private float jumpForce = 1000;
+    [Networked] public NetworkBool PlayerIsAlive { get; private set; }
 
     [Networked(OnChanged = nameof(OnNicknameChanged))] private NetworkString<_8> playerName { get; set; } // isim senkronizasyonu için yapıyoruz.
 
     [Networked] private NetworkButtons buttonsPrev { get; set; } //  hosta senkronize etmek için yapıyoruz.[network]
+    [Networked] private TickTimer respawnTimer { get; set; }
+    [Networked] private Vector2 serverNextSpawnPoint { get; set; }
 
     private float horizontal;
     private Rigidbody2D rb;
 
     private PlayerWeaponController playerWeaponController;
     private PlayerVisualController playerVisualController;
+    private PlayerHealthController playerHealthController;
 
     public enum PlayerInputButtons
     {
@@ -34,8 +38,12 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
 
         playerWeaponController = GetComponent<PlayerWeaponController>();
         playerVisualController = GetComponent<PlayerVisualController>();
+        playerHealthController = GetComponent<PlayerHealthController>();
 
         SetLocalObjects();
+        PlayerIsAlive = true; //en başta player hayatta true
+
+
     }
     private void SetLocalObjects()
     {
@@ -75,15 +83,28 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     {
         playerNameText.text = nickname + " " + Object.InputAuthority.PlayerId;
     }
+    public void KillPlayer() // ölme animasyonu geliyor ve rigidbody özellikleri gidiyor
+    {
+        if (Runner.IsServer) // now the host only is hoing the catche this random spawn point.
+        {
+            //todo catch new spawn point. Networked de olduğu için bütün playerlara sync olucak.
+            serverNextSpawnPoint = GlobalManagers.instance.playerSpawnerController.GetRandomSpawnPoint();
+        }
+        PlayerIsAlive = false;
+        rb.simulated = false;
+        playerVisualController.TriggerDieAnimation();
+        respawnTimer = TickTimer.CreateFromSeconds(Runner, 5f);
+
+    }
 
 
     //Happens before anything else Fusion does, network application, reconlation vs.
     //Called at the start of the Fusion Update loop, before the Fusion simulation loop.
     //It fires before Fusion does ANY work, every screen refresh.
-    public void BeforeUpdate() // fusionun yaptığı herşeyden önce buraya tnaımladık.
+    public void BeforeUpdate() // fusionun yaptığı herşeyden önce buraya tanımladık.
     {
         //We are checking if we are the local player
-        if (Runner.LocalPlayer == Object.HasInputAuthority) // eğer local playersak horizantalı kuruyoruz.
+        if (Runner.LocalPlayer == Object.HasInputAuthority && PlayerIsAlive) // eğer local playersak horizantalı kuruyoruz.
         {
             const string HORIZONTAL = "Horizontal";
             horizontal = Input.GetAxisRaw(HORIZONTAL);
@@ -93,19 +114,42 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     //F U N
     public override void FixedUpdateNetwork()
     {
+        CheckRespawnTimer();
         // will return false if:
         // the client does not have state authority or input authoriy;
         // the request type of input does not exist in simulation.
         // Hareket ettirdiğimiz kısım.
         // "InputAuthority" is likely an object that manages input for a specific player.
         // So, the code is checking whether the input authority can provide input data for a specific player of type "PlayerData". If it can, the input data is assigned to the "input" variable.
-        if (Runner.TryGetInputForPlayer<PlayerData>(Object.InputAuthority, out var input)) // // this out keyword will find PlayerData script and assign the value all the information from that script and put it into input variable.
+        if (Runner.TryGetInputForPlayer<PlayerData>(Object.InputAuthority, out var input) && PlayerIsAlive) // // this out keyword will find PlayerData script and assign the value all the information from that script and put it into input variable.
         {
             rb.velocity = new Vector2(input.HorizontalInput * moveSpeed, rb.velocity.y);
 
             CheckJumpInput(input);
         }
         playerVisualController.UpdateScaleTrasform(rb.velocity); // character flip
+    }
+    private void CheckRespawnTimer() // timerın süresi bittiğinde animation ve respawn yapmak istiyoruz.
+    {
+        if (PlayerIsAlive) return;
+
+        if (respawnTimer.Expired(Runner))
+        {
+            respawnTimer = TickTimer.None;
+            //todo respawn method
+            RespawnPlayer();
+        }
+
+    }
+    public void RespawnPlayer() // respawn animasyonu geliyor ve rigidbody özellikleri geri geliyor.
+    {
+        PlayerIsAlive = true;
+        rb.simulated = true;
+        rb.position = serverNextSpawnPoint; // sync olduğu için bütün clientlarda da geçerli olacak.
+        playerVisualController.TriggerRespawnAnimation();
+        playerHealthController.ResetHealthAmountToMax();
+
+
     }
 
     // Runs after all simulations have finished.
