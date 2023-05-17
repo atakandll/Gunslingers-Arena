@@ -6,6 +6,7 @@ using TMPro;
 
 public class PlayerController : NetworkBehaviour, IBeforeUpdate
 {
+    public bool AcceptAnyInput => PlayerIsAlive && !GameManager.MatchIsOver;
     [SerializeField] private TextMeshProUGUI playerNameText;
     [SerializeField] private GameObject cam;
     [SerializeField] private float moveSpeed = 6;
@@ -104,7 +105,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     public void BeforeUpdate() // fusionun yaptığı herşeyden önce buraya tanımladık.
     {
         //We are checking if we are the local player
-        if (Runner.LocalPlayer == Object.HasInputAuthority && PlayerIsAlive) // eğer local playersak horizantalı kuruyoruz.
+        if (Runner.LocalPlayer == Object.HasInputAuthority && AcceptAnyInput) // eğer local playersak horizantalı kuruyoruz.
         {
             const string HORIZONTAL = "Horizontal";
             horizontal = Input.GetAxisRaw(HORIZONTAL);
@@ -121,7 +122,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
         // Hareket ettirdiğimiz kısım.
         // "InputAuthority" is likely an object that manages input for a specific player.
         // So, the code is checking whether the input authority can provide input data for a specific player of type "PlayerData". If it can, the input data is assigned to the "input" variable.
-        if (Runner.TryGetInputForPlayer<PlayerData>(Object.InputAuthority, out var input) && PlayerIsAlive) // // this out keyword will find PlayerData script and assign the value all the information from that script and put it into input variable.
+        if (Runner.TryGetInputForPlayer<PlayerData>(Object.InputAuthority, out var input) && AcceptAnyInput) // // this out keyword will find PlayerData script and assign the value all the information from that script and put it into input variable.
         {
             rb.velocity = new Vector2(input.HorizontalInput * moveSpeed, rb.velocity.y);
 

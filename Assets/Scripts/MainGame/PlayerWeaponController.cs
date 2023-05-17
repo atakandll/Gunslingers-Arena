@@ -31,7 +31,7 @@ public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
     }
     public void BeforeUpdate()
     {
-        if (Runner.LocalPlayer == Object.HasInputAuthority && playerController.PlayerIsAlive)
+        if (Runner.LocalPlayer == Object.HasInputAuthority && playerController.AcceptAnyInput)
         {
             var direction = localCam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
 
@@ -46,7 +46,7 @@ public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
     {
         //host and server aynı
         //check if you are the local player or the host
-        if (Runner.TryGetInputForPlayer<PlayerData>(Object.InputAuthority, out var input) && playerController.PlayerIsAlive)
+        if (Runner.TryGetInputForPlayer<PlayerData>(Object.InputAuthority, out var input) && playerController.AcceptAnyInput)
         {
             CheckShootInput(input);
             // eğer bunun içinde rotasyonu yapsaydım other clients senkronize olmucaktı
