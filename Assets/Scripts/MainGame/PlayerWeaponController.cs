@@ -46,13 +46,26 @@ public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
     {
         //host and server aynı
         //check if you are the local player or the host
-        if (Runner.TryGetInputForPlayer<PlayerData>(Object.InputAuthority, out var input) && playerController.AcceptAnyInput)
+        if (Runner.TryGetInputForPlayer<PlayerData>(Object.InputAuthority, out var input))
         {
-            CheckShootInput(input);
-            // eğer bunun içinde rotasyonu yapsaydım other clients senkronize olmucaktı
-            currentPlayerPivotRotation = input.GunPivotRotation; // this will get sync across all player
+            if (playerController.AcceptAnyInput) // bunu yapma amacımız timer bittiğinde animasyonlar ve muzzle effectler devam ediyor. Oyüzden bunu bi if else yapısına bağladık.
+            {
+                CheckShootInput(input);
+                // eğer bunun içinde rotasyonu yapsaydım other clients senkronize olmucaktı
+                currentPlayerPivotRotation = input.GunPivotRotation; // this will get sync across all player
 
-            buttonsPrev = input.NetworkButtons; // button previousu set ettik.
+                buttonsPrev = input.NetworkButtons; // button previousu set ettik.
+
+            }
+            else
+            {
+                //todo reset
+                isHoldingShootingKey = false;
+                playMuzzleEffect = false;
+                buttonsPrev = default; // buttonı da resetledik.
+            }
+
+
 
         }
         pivotToRotate.rotation = currentPlayerPivotRotation;

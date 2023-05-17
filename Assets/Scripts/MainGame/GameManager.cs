@@ -7,11 +7,21 @@ using System;
 
 public class GameManager : NetworkBehaviour
 {
+    public event Action OnGameIsOver;
     public static bool MatchIsOver { get; private set; } // playercontrollerdan ulaşmak için staic yaptık.
     [SerializeField] private TextMeshProUGUI timerText;
-    [SerializeField] private float matchTimerAmount = 60;
+    [SerializeField] private float matchTimerAmount = 10;
     [SerializeField] private Camera cam;
     [Networked] TickTimer matchTimer { get; set; }
+
+    private void Awake()
+    {
+        if (GlobalManagers.instance != null)
+        {
+            GlobalManagers.instance.gameManager = this;
+        }
+
+    }
     public override void Spawned()
     {
         //reset this var
@@ -38,6 +48,7 @@ public class GameManager : NetworkBehaviour
         {
             MatchIsOver = true;
             matchTimer = TickTimer.None;
+            OnGameIsOver?.Invoke();
             Debug.Log("Match timer is over");
         }
     }
