@@ -485,7 +485,7 @@ GameObject:
   - component: {fileID: 4575967796545777504}
   - component: {fileID: 4575967796545777535}
   - component: {fileID: 4575967796545777534}
-  - component: {fileID: 7853739774263279735}
+  - component: {fileID: 3872279683783675366}
   m_Layer: 5
   m_Name: LoadingCanvas
   m_TagString: Untagged
@@ -576,7 +576,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7853739774263279735
+--- !u!114 &3872279683783675366
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

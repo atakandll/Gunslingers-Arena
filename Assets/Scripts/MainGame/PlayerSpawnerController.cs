@@ -10,7 +10,7 @@ public class PlayerSpawnerController : NetworkBehaviour, IPlayerJoined, IPlayerL
     [SerializeField] private NetworkPrefabRef playerNetworkPrefab = NetworkPrefabRef.Empty;
     [SerializeField] private Transform[] spawnPoints;
 
-    private void Awake()
+    private void Start()
     {
         if (GlobalManagers.instance != null)
         {

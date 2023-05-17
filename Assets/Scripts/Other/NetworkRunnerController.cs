@@ -17,6 +17,8 @@ public class NetworkRunnerController : MonoBehaviour, INetworkRunnerCallbacks //
 
     private NetworkRunner networkRunnerInstance;
 
+
+
     public void ShutDownRunner()
     {
         networkRunnerInstance.Shutdown(); // you are not connected anymore

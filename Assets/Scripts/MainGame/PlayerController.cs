@@ -11,6 +11,9 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     [SerializeField] private GameObject cam;
     [SerializeField] private float moveSpeed = 6;
     [SerializeField] private float jumpForce = 1000;
+    [Header("Grounded Vars")]
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform groundDetectionObj;
     [Networked] public NetworkBool PlayerIsAlive { get; private set; }
 
     [Networked(OnChanged = nameof(OnNicknameChanged))] private NetworkString<_8> playerName { get; set; } // isim senkronizasyonu için yapıyoruz.
@@ -18,6 +21,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     [Networked] private NetworkButtons buttonsPrev { get; set; } //  hosta senkronize etmek için yapıyoruz.[network]
     [Networked] public TickTimer RespawnTimer { get; private set; }
     [Networked] private Vector2 serverNextSpawnPoint { get; set; }
+    [Networked] private NetworkBool isGrounded { get; set; }
 
     private float horizontal;
     private Rigidbody2D rb;
@@ -127,6 +131,10 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
             rb.velocity = new Vector2(input.HorizontalInput * moveSpeed, rb.velocity.y);
 
             CheckJumpInput(input);
+
+            // without a network attribute, this will actually be set only locally and this condyion will never be true,
+            buttonsPrev = input.NetworkButtons; // always update the buttons pressed to network buttons
+
         }
         playerVisualController.UpdateScaleTrasform(rb.velocity); // character flip
     }
@@ -163,15 +171,20 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     }
     private void CheckJumpInput(PlayerData input)
     {
-        var pressed = input.NetworkButtons.GetPressed(buttonsPrev);
+        isGrounded = (bool)Runner.GetPhysicsScene2D().OverlapBox(groundDetectionObj.transform.position, groundDetectionObj.transform.localScale, 0, groundLayer);
 
-        if (pressed.WasPressed(buttonsPrev, PlayerInputButtons.Jump))
+        if (isGrounded)
         {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
+            var pressed = input.NetworkButtons.GetPressed(buttonsPrev);
+
+            if (pressed.WasPressed(buttonsPrev, PlayerInputButtons.Jump))
+            {
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
+            }
+
         }
 
-        // without a network attribute, this will actually be set only locally and this condyion will never be true,
-        buttonsPrev = input.NetworkButtons; // always update the buttons pressed to network buttons
+
 
     }
     public override void Despawned(NetworkRunner runner, bool hasState)
