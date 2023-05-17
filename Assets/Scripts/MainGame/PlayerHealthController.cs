@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class PlayerHealthController : NetworkBehaviour
 {
+    [SerializeField] private LayerMask deathGroundLayerMask;
     [SerializeField] private Animator bloodScreenAnimator;
     [SerializeField] private PlayerCameraController playerCameraController;
     [SerializeField] private Image fillAmountImage;
@@ -14,15 +15,31 @@ public class PlayerHealthController : NetworkBehaviour
     [Networked(OnChanged = nameof(HealthAmountChanged))] private int currentHealthAmount { get; set; }
     private const int MAX_HEALTH_AMOUNT = 100;
     private PlayerController playerController;
+    private Collider2D coll;
 
     public override void Spawned() // spawned will be called on the host
     {
         playerController = GetComponent<PlayerController>();
+        coll = GetComponent<Collider2D>();
         currentHealthAmount = MAX_HEALTH_AMOUNT; // canı ilk başkta 100 yaptık.
 
     }
 
-    // 
+    public override void FixedUpdateNetwork()
+    {
+        if (Runner.IsServer && playerController.PlayerIsAlive)
+        {
+            var didHitCollider = Runner.GetPhysicsScene2D().OverlapBox(transform.position, coll.bounds.size, 0, deathGroundLayerMask);
+
+            if (didHitCollider != default)
+            {
+                Rpc_ReducePlayerHealth(MAX_HEALTH_AMOUNT);
+            }
+        }
+
+
+
+    }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
     public void Rpc_ReducePlayerHealth(int damage)

@@ -5847,6 +5847,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  deathGroundLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
   bloodScreenAnimator: {fileID: 5357334286695869659}
   playerCameraController: {fileID: 5416392346498683735}
   fillAmountImage: {fileID: 6883105910454883919}
@@ -5864,6 +5867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ImpulseSource: {fileID: 4343298536816187281}
+  confiner2D: {fileID: 6340087325983047095}
 --- !u!1 &2521529229068066407
 GameObject:
   m_ObjectHideFlags: 0
@@ -7137,6 +7141,7 @@ GameObject:
   - component: {fileID: 5979654709936625118}
   - component: {fileID: 7439469501716294370}
   - component: {fileID: 6484872809582582601}
+  - component: {fileID: 6340087325983047095}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -7158,7 +7163,7 @@ Transform:
   m_Children:
   - {fileID: 5562334756146836291}
   m_Father: {fileID: 2765238858484411582}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7439469501716294370
 MonoBehaviour:
@@ -7221,6 +7226,21 @@ MonoBehaviour:
     m_FrequencyGain: 1
     m_Duration: 1
     m_NoiseOffsets: {x: 0, y: 0, z: 0}
+--- !u!114 &6340087325983047095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6564469524207118557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BoundingShape2D: {fileID: 0}
+  m_Damping: 0.5
+  m_MaxWindowSize: -1
 --- !u!1 &6914899150836615394
 GameObject:
   m_ObjectHideFlags: 0
@@ -7903,8 +7923,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5979654709936625118}
   - {fileID: 8167346387733811766}
+  - {fileID: 5979654709936625118}
   m_Father: {fileID: 1898736879168250607}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8071,7 +8091,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4552985093969167293, guid: 36d6864550236234fbe91ee547591b07, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4552985093969167293, guid: 36d6864550236234fbe91ee547591b07, type: 3}
       propertyPath: m_AnchorMax.x

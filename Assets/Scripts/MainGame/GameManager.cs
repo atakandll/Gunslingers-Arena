@@ -8,6 +8,8 @@ using System;
 public class GameManager : NetworkBehaviour
 {
     public event Action OnGameIsOver;
+
+    [field: SerializeField] public Collider2D CameraBounds { get; private set; }
     public static bool MatchIsOver { get; private set; } // playercontrollerdan ulaşmak için staic yaptık.
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private float matchTimerAmount = 10;

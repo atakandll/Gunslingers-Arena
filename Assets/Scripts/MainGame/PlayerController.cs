@@ -22,6 +22,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     [Networked] public TickTimer RespawnTimer { get; private set; }
     [Networked] private Vector2 serverNextSpawnPoint { get; set; }
     [Networked] private NetworkBool isGrounded { get; set; }
+    [Networked] private TickTimer respawnToNewPointTimer { get; set; }
 
     private float horizontal;
     private Rigidbody2D rb;
@@ -54,6 +55,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     {
         if (Runner.LocalPlayer == Object.HasInputAuthority) // eğer local player isem
         {
+            cam.transform.SetParent(null); // kamerayı parenttan çıkarıyoruz
             cam.SetActive(true);
 
             var nickName = playerName = GlobalManagers.instance.networkRunnerController.LocalPlayerNickname;
@@ -94,6 +96,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
         {
             //todo catch new spawn point. Networked de olduğu için bütün playerlara sync olucak.
             serverNextSpawnPoint = GlobalManagers.instance.playerSpawnerController.GetRandomSpawnPoint();
+            respawnToNewPointTimer = TickTimer.CreateFromSeconds(Runner, 4f); // respawn olurken respawn süresi bitmeden hemen spawn olsun diye süreyi 5 den küçük yaptık.
         }
         PlayerIsAlive = false;
         rb.simulated = false;
@@ -142,6 +145,13 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     {
         if (PlayerIsAlive) return;
 
+        // Will only run on the server.
+        if (respawnToNewPointTimer.Expired(Runner))
+        {
+            GetComponent<NetworkRigidbody2D>().TeleportToPosition(serverNextSpawnPoint);
+            respawnToNewPointTimer = TickTimer.None;
+        }
+
         if (RespawnTimer.Expired(Runner))
         {
             RespawnTimer = TickTimer.None;
@@ -154,7 +164,7 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     {
         PlayerIsAlive = true;
         rb.simulated = true;
-        rb.position = serverNextSpawnPoint; // sync olduğu için bütün clientlarda da geçerli olacak.
+
         playerVisualController.TriggerRespawnAnimation();
         playerHealthController.ResetHealthAmountToMax();
 
