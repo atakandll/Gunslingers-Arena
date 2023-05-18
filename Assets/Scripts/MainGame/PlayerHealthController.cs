@@ -80,7 +80,7 @@ public class PlayerHealthController : NetworkBehaviour
     }
     private void PlayerGotHit(int healtAmount)
     {
-        var isLocalPlayer = Runner.LocalPlayer == Object.HasInputAuthority;
+        var isLocalPlayer = Utils.IsLocalPlayer(Object);
 
         if (isLocalPlayer)
         {

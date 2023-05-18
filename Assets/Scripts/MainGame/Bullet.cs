@@ -13,11 +13,11 @@ public class Bullet : NetworkBehaviour
 
     [Networked] private NetworkBool didHitSomething { get; set; }
     [Networked] private TickTimer lifeTimeTimer { get; set; }
-    private Collider2D collider2D;
+    private Collider2D coll;
 
     public override void Spawned()
     {
-        collider2D = GetComponent<Collider2D>();
+        coll = GetComponent<Collider2D>();
 
         lifeTimeTimer = TickTimer.CreateFromSeconds(Runner, lifeTimeAmount); // returns new ticktimer with the target tick calculated using amount of Ticks provided and current simulation tick.
     }
@@ -46,7 +46,7 @@ public class Bullet : NetworkBehaviour
     private void CheckIfHitGround()
     {
         // Find all colliders touching or inside of the given box.
-        var groundCollider = Runner.GetPhysicsScene2D().OverlapBox(transform.position, collider2D.bounds.size, 0, groundLayerMask);
+        var groundCollider = Runner.GetPhysicsScene2D().OverlapBox(transform.position, coll.bounds.size, 0, groundLayerMask);
 
         if (groundCollider != default)
         {
@@ -58,7 +58,7 @@ public class Bullet : NetworkBehaviour
     private List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
     private void CheckIfWeHitAPlayer()
     {
-        Runner.LagCompensation.OverlapBox(transform.position, collider2D.bounds.size, Quaternion.identity, Object.InputAuthority, hits, playerLayerMask);
+        Runner.LagCompensation.OverlapBox(transform.position, coll.bounds.size, Quaternion.identity, Object.InputAuthority, hits, playerLayerMask);
 
         if (hits.Count > 0) // meaning we have something inside
         {

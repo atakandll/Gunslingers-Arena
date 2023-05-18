@@ -31,7 +31,7 @@ public class PlayerWeaponController : NetworkBehaviour, IBeforeUpdate
     }
     public void BeforeUpdate()
     {
-        if (Runner.LocalPlayer == Object.HasInputAuthority && playerController.AcceptAnyInput)
+        if (Utils.IsLocalPlayer(Object) && playerController.AcceptAnyInput)
         {
             var direction = localCam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
 

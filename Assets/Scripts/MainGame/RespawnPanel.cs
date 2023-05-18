@@ -12,7 +12,7 @@ public class RespawnPanel : SimulationBehaviour // network behoviour şeyleri ku
 
     public override void FixedUpdateNetwork()
     {
-        if (playerController.Object.HasInputAuthority == Runner.LocalPlayer) // local player harici gösterim için( oynayan kişi öldürdüğünde diğer clientin ekranında gözükecek.)
+        if (Utils.IsLocalPlayer(Object)) // local player harici gösterim için( oynayan kişi öldürdüğünde diğer clientin ekranında gözükecek.)
         {
             var timerIsRunning = playerController.RespawnTimer.IsRunning;
             childObject.SetActive(timerIsRunning); // timer çalışıcaksa bu aktif olucak bool değişken yukardaki

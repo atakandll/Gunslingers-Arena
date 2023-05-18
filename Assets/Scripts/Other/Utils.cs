@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
 public static class Utils  // helper class for duplication
 {
+    public static bool IsLocalPlayer(NetworkObject networkObj)
+    {
+        return networkObj.IsValid == networkObj.HasInputAuthority;
+    }
     public static IEnumerator PlayAnimAndSetStateWhenFinished(GameObject parent, Animator animator, string clipName, bool activeStateAtTheEnd = true)
     {
         animator.Play(clipName);
