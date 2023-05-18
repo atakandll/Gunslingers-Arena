@@ -6,7 +6,7 @@ using TMPro;
 
 public class PlayerController : NetworkBehaviour, IBeforeUpdate
 {
-    public bool AcceptAnyInput => PlayerIsAlive && !GameManager.MatchIsOver;
+    public bool AcceptAnyInput => PlayerIsAlive && !GameManager.MatchIsOver && !PlayerChatController.IsTyping;
     [SerializeField] private TextMeshProUGUI playerNameText;
     [SerializeField] private GameObject cam;
     [SerializeField] private float moveSpeed = 6;
