@@ -6991,8 +6991,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   SphereRadius: 0
-  BoxExtents: {x: 0.26, y: 0.36, z: 0.12}
-  Offset: {x: -0.03, y: -0.09, z: -0.32}
+  BoxExtents: {x: 0.26, y: 0.36, z: 0}
+  Offset: {x: -0.03, y: -0.09, z: 0}
   Root: {fileID: 5758553987940326272}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &5095790098856088718

@@ -11,15 +11,17 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     [SerializeField] private GameObject cam;
     [SerializeField] private float moveSpeed = 6;
     [SerializeField] private float jumpForce = 1000;
+
     [Header("Grounded Vars")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform groundDetectionObj;
+    [Networked] public TickTimer RespawnTimer { get; private set; }
     [Networked] public NetworkBool PlayerIsAlive { get; private set; }
 
-    [Networked(OnChanged = nameof(OnNicknameChanged))] private NetworkString<_8> playerName { get; set; } // isim senkronizasyonu için yapıyoruz.
+    [Networked(OnChanged = nameof(OnNicknameChanged))]
+    private NetworkString<_8> playerName { get; set; } // isim senkronizasyonu için yapıyoruz.
 
     [Networked] private NetworkButtons buttonsPrev { get; set; } //  hosta senkronize etmek için yapıyoruz.[network]
-    [Networked] public TickTimer RespawnTimer { get; private set; }
     [Networked] private Vector2 serverNextSpawnPoint { get; set; }
     [Networked] private NetworkBool isGrounded { get; set; }
     [Networked] private TickTimer respawnToNewPointTimer { get; set; }

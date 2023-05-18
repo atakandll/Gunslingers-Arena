@@ -19,8 +19,8 @@ public class PlayerHealthController : NetworkBehaviour
 
     public override void Spawned() // spawned will be called on the host
     {
-        playerController = GetComponent<PlayerController>();
         coll = GetComponent<Collider2D>();
+        playerController = GetComponent<PlayerController>();
         currentHealthAmount = MAX_HEALTH_AMOUNT; // canı ilk başkta 100 yaptık.
 
     }
@@ -60,13 +60,15 @@ public class PlayerHealthController : NetworkBehaviour
         {
             changed.Behaviour.UpdateVisuals(currentHealth); // we will update visuals
 
-        }
-        // We did not respawn or just spawned.
-        if (currentHealth != MAX_HEALTH_AMOUNT)
-        {
-            changed.Behaviour.PlayerGotHit(currentHealth);
+            // We did not respawn or just spawned.
+            if (currentHealth != MAX_HEALTH_AMOUNT)
+            {
+                changed.Behaviour.PlayerGotHit(currentHealth);
+
+            }
 
         }
+
 
     }
     private void UpdateVisuals(int healthAmount)
