@@ -12,8 +12,8 @@ In this game, which you can play with a maximum of six people in a five-minute p
 ![Screenshot_184](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/ba5132d6-19e1-4954-90b8-4188087db492)
 
 Controls:
-WASD - Move
-Mouse - Aim and shoot
+WASD - Move, 
+ Mouse - Aim and shoot
 
 ![Screenshot_185](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/08391703-e178-48bd-aac3-f45e9747301a)
 
