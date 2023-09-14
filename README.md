@@ -1,7 +1,8 @@
 # Gunslinger's Arena
 In this game, which you can play with a maximum of six people in a five-minute period, players can create their own rooms and wait for their friends to join after determining their unique usernames, join a created room or join a random lobby to meet new opponents.
 
-`Play:` https://atakandll.itch.io/gunslingers-arena
+`PLAY:` [Gunslinger's Arena](https://atakandll.itch.io/gunslingers-arena)
+
 
  
 ![ezgif com-video-to-gif (2)](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/a3a2c295-1e72-4c4e-8cf2-da42d365e287)
