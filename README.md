@@ -1,29 +1,31 @@
 # Gunslinger's Arena
 In this game, which you can play with a maximum of six people in a five-minute period, players can create their own rooms and wait for their friends to join after determining their unique usernames, join a created room or join a random lobby to meet new opponents.
 
-![Screenshot_179](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/1d11c548-77b6-4eb6-8aa6-12c44f307a7b)
+`Play:` https://atakandll.itch.io/gunslingers-arena
 
  
-The story revolves around a knight trapped in medieval captivity. But this time, a miracle happens and he is given a modern weapon
-
-![Screenshot_182](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/410244cf-bcb5-434a-9ba2-2091b3252515)
+![ezgif com-video-to-gif (2)](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/a3a2c295-1e72-4c4e-8cf2-da42d365e287)
 
 
 
-![Screenshot_170](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/48847a23-0ce1-47ea-b2c0-9d077a2444bc)
+![ezgif com-video-to-gif (1)](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/2d073c51-69da-450b-b648-e4f472b320d1)
 
 
 
-![Screenshot_184](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/ba5132d6-19e1-4954-90b8-4188087db492)
 
-Controls:
-WASD - Move, 
- Mouse - Aim and shoot
+## Controls:
+-  `WASD:` - Move, 
+ - `Mouse:` - Aim and shoot
  
  ![Screenshot_171](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/baecd7bd-7a12-453e-bb9f-24b1b8a75602)
 
+## About Development Process
+- Implemented client-side prediction, server reconciliation and lag compensation techniquesforsmooth gameplay
+experience.
+- Leveraged Photon Fusion library to handle networking and synchronize game states across multiple clients.
+- Collaborated closely with network engineersto optimize multiplayer functionality and minimize latency.
 
-![Screenshot_185](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/08391703-e178-48bd-aac3-f45e9747301a)
+
 
 
 
