@@ -21,7 +21,7 @@ In this game, which you can play with a maximum of six people in a five-minute p
  ![Screenshot_171](https://github.com/atakandll/Gunslingers-Arena/assets/130579265/baecd7bd-7a12-453e-bb9f-24b1b8a75602)
 
 ## About Development Process
-- Implemented client-side prediction, server reconciliation and lag compensation techniquesforsmooth gameplay
+- Implemented client-side prediction, server reconciliation and lag compensation techniques for smooth gameplay
 experience.
 - Leveraged Photon Fusion library to handle networking and synchronize game states across multiple clients.
 - Collaborated closely with network engineersto optimize multiplayer functionality and minimize latency.
